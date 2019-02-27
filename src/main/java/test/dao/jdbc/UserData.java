@@ -1,4 +1,4 @@
-package test.dao;
+package test.dao.jdbc;
 
 public class UserData {
     private int id;

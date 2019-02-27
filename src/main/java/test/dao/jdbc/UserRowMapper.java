@@ -1,4 +1,4 @@
-package test.dao;
+package test.dao.jdbc;
 
 import org.springframework.jdbc.core.RowMapper;
 
