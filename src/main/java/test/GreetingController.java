@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import test.dao.jdbc.DbHelper;
 import test.dao.jdbc.UserData;
+import test.dao.jpa.User;
+import test.dao.jpa.UserRepository;
 import test.exception.FooError;
 import test.exception.OpException;
 import test.exception.StubExc;
