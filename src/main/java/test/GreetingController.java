@@ -1,17 +1,16 @@
 package test;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.web.bind.annotation.*;
 
 import test.dao.jdbc.DbHelper;
@@ -23,6 +22,8 @@ import test.exception.FooError;
 import test.exception.OpException;
 import test.exception.StubExc;
 import test.objects.CustomPara;
+import test.redis.RedisData;
+import test.redis.RedisHelper;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -234,39 +235,30 @@ public class GreetingController {
         return res;
     }
 
+
     // redis
-    /*@Bean
-    public RedisTemplate<Object, Object> genRedisTemplate() {
-        RedisTemplate redis = new RedisTemplate<>();
-        redis.setKeySerializer(new StringRedisSerializer());
-        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-
-        jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
-        redis.setValueSerializer(jackson2JsonRedisSerializer);
-        return redis;
-    }*/
-
     @Autowired
-    private StringRedisTemplate stringRedisTemplate;
-    @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisHelper redisHelper;
 
-    @RequestMapping("/redis/set")
-    public String hehe(@RequestParam String k, @RequestParam String v) {
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        /*Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-        jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
-        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);*/
-        redisTemplate.setValueSerializer(new StringRedisSerializer());
+    @RequestMapping("/redis/set/object")
+    public String redisSetObject() {
+        redisHelper.setObjectData();
+        return "set object ok";
+    }
 
-        redisTemplate.opsForValue().set("hehe", "good");
-        return "good";
+    @RequestMapping("/redis/get/object")
+    public RedisData redisGetObject() {
+        return redisHelper.getObjectData();
+    }
+
+    @RequestMapping("/redis/set/json")
+    public String redisSetJson() throws JsonProcessingException {
+        redisHelper.setJson();
+        return "set json ok";
+    }
+
+    @RequestMapping("/redis/get/json")
+    public RedisData redisGetJson() throws IOException {
+        return redisHelper.getJson();
     }
 }
