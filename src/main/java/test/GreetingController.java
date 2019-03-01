@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
+import test.cache.CacheTest;
 import test.dao.jdbc.DbHelper;
 import test.dao.jdbc.UserData;
 import test.dao.jpa.ResultJoin;
@@ -260,5 +261,27 @@ public class GreetingController {
     @RequestMapping("/redis/get/json")
     public RedisData redisGetJson() throws IOException {
         return redisHelper.getJson();
+    }
+
+
+    // cache
+    @Autowired
+    private CacheTest cacheTest;
+
+    @RequestMapping("/cache/set")
+    public String setCacheName(@RequestParam int id, @RequestParam String name) {
+        cacheTest.setFullName(id, name);
+        return "set cache name ok";
+    }
+
+    @RequestMapping("/cache/get")
+    public String getCacheName(@RequestParam int id) {
+        return cacheTest.getFullName(id);
+    }
+
+    @RequestMapping("/cache/remove")
+    public String removeCacheName(@RequestParam int id) {
+        cacheTest.removeName(id);
+        return "remove ok";
     }
 }
