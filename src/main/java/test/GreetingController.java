@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import test.cache.CacheTest;
@@ -35,6 +36,11 @@ import javax.persistence.criteria.Root;
 public class GreetingController {
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
+
+    @RequestMapping("/")
+    public String getIndex() {
+        return "test home";
+    }
 
     @RequestMapping("/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
@@ -80,6 +86,7 @@ public class GreetingController {
 
 
     // exception
+    @Secured("ROLE_ADMIN")
     @RequestMapping("/numerror")
     public String testException(int num) {
         if (num % 2 == 0)

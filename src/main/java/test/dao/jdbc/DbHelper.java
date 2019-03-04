@@ -2,9 +2,10 @@ package test.dao.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -13,18 +14,32 @@ import java.util.List;
 @Repository
 public class DbHelper {
     @Autowired
+    private DataSource dataSource;
+
+
+    @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    /*@Bean
+    public DataSource genDataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://172.17.171.190:30006/test?useSSL=false");
+        dataSource.setUsername("root");
+        dataSource.setPassword("123456");
+        return dataSource;
+    }*/
 
     @Bean
     public JdbcTemplate genJdbcTemplate(@Value("${driver-class}") String driverName,
                                         @Value("${spring.datasource.url}") String jdbcUrl,
                                         @Value("${spring.datasource.username}") String jdbcUser,
                                         @Value("${spring.datasource.password}") String jdbcPass) {
-        DataSource dataSource = new DriverManagerDataSource();
+        /*DataSource dataSource = new DriverManagerDataSource();
         ((DriverManagerDataSource) dataSource).setDriverClassName(driverName);
         ((DriverManagerDataSource) dataSource).setUrl(jdbcUrl);
         ((DriverManagerDataSource) dataSource).setUsername(jdbcUser);
-        ((DriverManagerDataSource) dataSource).setPassword(jdbcPass);
+        ((DriverManagerDataSource) dataSource).setPassword(jdbcPass);*/
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.setDataSource(dataSource);
         return jdbcTemplate;
