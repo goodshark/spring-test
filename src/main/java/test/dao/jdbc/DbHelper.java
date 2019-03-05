@@ -1,7 +1,12 @@
 package test.dao.jdbc;
 
+//import org.apache.commons.dbcp2.BasicDataSource;
+//import org.apache.commons.dbcp2.BasicDataSourceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -16,19 +21,8 @@ public class DbHelper {
     @Autowired
     private DataSource dataSource;
 
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    /*@Bean
-    public DataSource genDataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://172.17.171.190:30006/test?useSSL=false");
-        dataSource.setUsername("root");
-        dataSource.setPassword("123456");
-        return dataSource;
-    }*/
 
     @Bean
     public JdbcTemplate genJdbcTemplate(@Value("${driver-class}") String driverName,
