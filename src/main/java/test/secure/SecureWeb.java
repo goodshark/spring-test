@@ -39,7 +39,7 @@ public class SecureWeb  extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.formLogin()
                 .and()
-                .rememberMe();
+                .rememberMe().and().httpBasic();
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/db/**").authenticated()
                 .antMatchers("/greeting").authenticated().anyRequest().permitAll();
     }
